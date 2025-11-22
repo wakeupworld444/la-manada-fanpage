@@ -39,6 +39,13 @@
             margin-top: 25px;
         }
 
+        /* ---- Playlist Embed ---- */
+        .playlist-box {
+            margin-top: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
         /* ---- Members Section ---- */
         .members {
             display: grid;
@@ -60,6 +67,16 @@
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 10px;
+        }
+
+        .member-box h4 {
+            margin: 10px 0 5px 0;
+            font-size: 1.2rem;
+        }
+
+        .member-box p {
+            font-size: 0.9rem;
+            color: #ccc;
         }
 
         /* ---- Producer Section ---- */
@@ -85,11 +102,23 @@
             text-align: left;
         }
 
+        .producer-box-text h4 {
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .producer-box-text p {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.5;
+        }
+
         @media (max-width: 700px) {
             .producer-box {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
+
             .producer-box-text {
                 text-align: center;
             }
@@ -108,7 +137,6 @@
 
 <header>La Manada – Fan Page</header>
 
-<!-- ===== Banner ===== -->
 <section>
     <img class="banner" src="banner.jpg" alt="La Manada – Llegó al Satélite">
 
@@ -116,24 +144,21 @@
     <p>Esta es una fan page creada por oyentes del podcast “La Manada” en Satélite Plus.</p>
 
     <h3>Últimos Episodios (En Vivo)</h3>
-    <p style="color:#bbb; font-size:0.9rem;">
-        Aquí puedes ver el arsenal completo de episodios EN VIVO desde el canal oficial Satélite+.
-        La lista se actualiza automáticamente cada vez que publican un nuevo stream.
+
+    <p style="font-size:0.9rem; color:#bbb;">
+        Aquí puedes ver el arsenal completo de episodios EN VIVO desde el canal oficial Satélite+.  
+        La lista se actualiza automáticamente porque viene de la playlist oficial.
     </p>
 
-    <!-- ⭐ Automatic livestream playlist -->
-    <iframe 
-        width="100%" 
-        height="500" 
-        src="https://www.youtube.com/embed?list=UUtFCY5pLUuW-xcdMMAnXQ4w" 
-        title="La Manada en Vivo" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
+    <div class="playlist-box">
+        <iframe width="100%" height="500" 
+            src="https://www.youtube.com/embed/videoseries?list=PL92Sjlu0zqCB2abe3nzMqRWApI-uLJ13g"
+            title="Playlist La Manada" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+    </div>
 </section>
 
-<!-- ===== Members ===== -->
 <section>
     <h3>Miembros del Podcast</h3>
 
@@ -160,7 +185,6 @@
     </div>
 </section>
 
-<!-- ===== Producer Section ===== -->
 <section>
     <h3>El Productor</h3>
 
@@ -170,8 +194,9 @@
         <div class="producer-box-text">
             <h4>Abneer Robles</h4>
             <p>
-                Productor de La Manada. Abneer ya estaba a la altura del satélite antes de que existieran los satélites;
-                lleva más de 14 años generando emociones detrás de cámaras, detrás de los controles
+                Productor de La Manada.  
+                Abneer ya estaba a la altura del satélite antes de que existieran los satélites;  
+                lleva más de 14 años generando emociones detrás de cámaras, detrás de los controles  
                 y ahora también desde el espacio de Satélite Plus.
             </p>
         </div>
