@@ -80,6 +80,51 @@
             color: #ccc;
         }
 
+        /* ---- Producer Section ---- */
+        .producer-box {
+            background: #222;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+            gap: 20px;
+            align-items: center;
+        }
+
+        .producer-box img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .producer-box-text {
+            text-align: left;
+        }
+
+        .producer-box-text h4 {
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .producer-box-text p {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .producer-box {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .producer-box-text {
+                text-align: center;
+            }
+        }
+
         footer {
             padding: 20px;
             margin-top: 40px;
@@ -118,12 +163,6 @@
     <div class="members">
 
         <div class="member-box">
-            <img src="abneerrobles.jpeg" alt="Abneer Robles">
-            <h4>Abneer Robles</h4>
-            <p>Parte del equipo de La Manada, conocido por su estilo directo y opiniones intensas.</p>
-        </div>
-
-        <div class="member-box">
             <img src="gerardope.jpg" alt="Gerardo Pe">
             <h4>Gerardo Pe</h4>
             <p>Integrante con humor sarcástico y mucha energía, siempre aporta dinamismo al podcast.</p>
@@ -141,6 +180,23 @@
             <p>Conocido por su humor y actitud relajada, complementa perfectamente al grupo.</p>
         </div>
 
+    </div>
+</section>
+
+<section>
+    <h3>El Productor</h3>
+
+    <div class="producer-box">
+        <img src="abneerrobles.jpeg" alt="Abneer Robles">
+
+        <div class="producer-box-text">
+            <h4>Abneer Robles</h4>
+            <p>
+                Productor de La Manada. Abneer ya estaba a la altura del satélite antes de que existieran los satélites;
+                lleva más de 14 años generando emociones detrás de cámaras, detrás de los controles
+                y ahora también desde el espacio de Satélite Plus.
+            </p>
+        </div>
     </div>
 </section>
 
