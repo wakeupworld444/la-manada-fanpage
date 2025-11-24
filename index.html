@@ -157,56 +157,27 @@
             }
         }
 
-        /* ---- Latest Episodes Grid ---- */
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+        /* ---- Playlist embed ---- */
+        .playlist-embed-wrapper {
             margin-top: 20px;
         }
 
-        .video-card {
-            background: #222;
-            border-radius: 12px;
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
             overflow: hidden;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            border-radius: 12px;
+            border: 1px solid #333;
         }
 
-        .video-card img {
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .video-card-body {
-            padding: 12px 14px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .video-title {
-            font-size: 0.95rem;
-            font-weight: bold;
-        }
-
-        .video-date {
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-
-        .video-link {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #1e90ff;
-            text-decoration: none;
-        }
-
-        .video-link:hover {
-            text-decoration: underline;
+            height: 100%;
+            border: 0;
         }
 
         /* ---- Members Section ---- */
@@ -335,16 +306,17 @@
     <h3>Últimos Episodios (En Vivo)</h3>
 
     <p style="font-size:0.9rem; color:#bbb;">
-        Aquí puedes ver el arsenal completo de episodios EN VIVO desde el canal oficial Satélite+.  
+        Aquí puedes ver todos los episodios EN VIVO desde el canal oficial Satélite+.  
         La lista se actualiza automáticamente porque viene de la playlist oficial.
     </p>
 
-    <!-- Playlist card with thumbnail + link -->
+    <!-- Playlist card with dynamic thumbnail (latest video) -->
     <div class="playlist-card">
-        <a href="https://www.youtube.com/playlist?list=PL92Sjlu0zqCB2abe3nzMqRWApI-uLJ13g"
+        <a id="playlist-link"
+           href="https://www.youtube.com/playlist?list=PL92Sjlu0zqCB2abe3nzMqRWApI-uLJ13g"
            target="_blank" rel="noopener">
-            <!-- Guarda una imagen de la playlist como playlist-thumb.jpg en tu carpeta -->
-  <img src="https://i.ytimg.com/vi/HfZwnJDR97c/hqdefault.jpg" alt="Playlist Thumbnail">
+
+            <img id="playlist-thumb" src="banner.jpg" alt="Playlist Thumbnail">
 
         </a>
 
@@ -361,9 +333,16 @@
         </div>
     </div>
 
-    <!-- Container where JS will inject individual videos from the playlist -->
-    <div id="videos-grid" class="videos-grid">
-        <div style="grid-column: 1 / -1; text-align:center; color:#888;">Cargando episodios...</div>
+    <!-- Embedded playlist player (no API key needed) -->
+    <div class="playlist-embed-wrapper">
+        <div class="video-wrapper">
+            <iframe
+                src="https://www.youtube.com/embed/videoseries?list=PL92Sjlu0zqCB2abe3nzMqRWApI-uLJ13g"
+                title="La Manada – Playlist oficial"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
 </section>
 
@@ -412,73 +391,31 @@
     Página creada por un fan – No afiliada oficialmente al podcast.
 </footer>
 
-<!-- ===== YouTube Data API script ===== -->
+<!-- ===== No-API playlist thumbnail script ===== -->
 <script>
-    // Rellena estos valores con tus datos reales
-    const API_KEY = "YOUR_API_KEY_HERE";
     const PLAYLIST_ID = "PL92Sjlu0zqCB2abe3nzMqRWApI-uLJ13g";
-    const MAX_RESULTS = 12; // cuántos videos mostrar
 
-    async function loadVideos() {
-        const container = document.getElementById("videos-grid");
+    async function loadPlaylistThumb() {
+        const thumbImg = document.getElementById("playlist-thumb");
+        if (!thumbImg) return;
 
-        if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
-            container.innerHTML =
-                "<div style='grid-column:1/-1; text-align:center; color:#888;'>Configura tu API key de YouTube para ver los episodios aquí.</div>";
-            return;
-        }
+        const url = `https://www.youtube.com/oembed?url=https://www.youtube.com/playlist?list=${PLAYLIST_ID}&format=json`;
 
         try {
-            const url = `https://www.googleapis.com/youtube/v3/playlistItems?` +
-                        `part=snippet&maxResults=${MAX_RESULTS}&playlistId=${PLAYLIST_ID}&key=${API_KEY}`;
-
             const res = await fetch(url);
             const data = await res.json();
 
-            if (!data.items || !data.items.length) {
-                container.innerHTML =
-                    "<div style='grid-column:1/-1; text-align:center; color:#888;'>No se encontraron episodios.</div>";
-                return;
-            }
-
-            container.innerHTML = ""; // clear "Cargando..."
-
-            data.items.forEach(item => {
-                const s = item.snippet;
-                const videoId = s.resourceId.videoId;
-                const title = s.title;
-                const thumbnail = s.thumbnails && (s.thumbnails.high || s.thumbnails.medium || s.thumbnails.default);
-                const thumbUrl = thumbnail ? thumbnail.url : "";
-                const date = new Date(s.publishedAt);
-                const formattedDate = date.toLocaleDateString("es-PE", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                });
-
-                const card = document.createElement("div");
-                card.className = "video-card";
-                card.innerHTML = `
-                    <img src="${thumbUrl}" alt="${title}">
-                    <div class="video-card-body">
-                        <div class="video-title">${title}</div>
-                        <div class="video-date">📅 ${formattedDate}</div>
-                        <a class="video-link" href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener">
-                            Ver en YouTube
-                        </a>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
+            // YouTube actualiza automáticamente el thumbnail de la playlist
+            // normalmente usando el último video añadido.
+            thumbImg.src = data.thumbnail_url;
         } catch (err) {
-            console.error(err);
-            container.innerHTML =
-                "<div style='grid-column:1/-1; text-align:center; color:#f66;'>Error cargando episodios.</div>";
+            console.error("Error cargando thumbnail de la playlist:", err);
+            // fallback en caso de error
+            thumbImg.src = "banner.jpg";
         }
     }
 
-    loadVideos();
+    loadPlaylistThumb();
 </script>
 
 </body>
